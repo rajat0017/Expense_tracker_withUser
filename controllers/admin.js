@@ -27,10 +27,16 @@ exports.adduser = async (req, res, next) => {
 
 exports.login= async (req, res, next) => {
     const{email,password}= req.body;
-    const user = await userdetails.findAll({where :{email:email,password:password}});
+    const user = await userdetails.findAll({where :{email:email}});
     try{
         if(user.length>0) {
-            return res.status(200).json({ success: true, message: "Login successful"});
+            const userdetail = await userdetails.findAll({where:{email:email,password:password}})
+            if(userdetail.length>0){
+                return res.status(200).json({ success: true, message: "Login successful"});
+            }
+            else{
+                return res.status(401).json({ error: "User not authorized" });
+            }
         }
         else{
             return res.status(404).json({ error: "User not found" });

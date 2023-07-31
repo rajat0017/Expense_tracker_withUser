@@ -19,6 +19,11 @@ async function loginrequest(e){
         } 
       }
       catch(err){
-        form.innerHTML += `<div style="color:red;">Invalid Credentials</div>`;
+        if(err.response.status==401){
+          form.innerHTML += `<div style="color:red;">User not authorized</div>`;
+        }
+        else{
+          form.innerHTML += `<div style="color:red;">User not Found</div>`;
+        }
       }
 }
