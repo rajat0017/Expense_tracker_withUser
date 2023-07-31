@@ -19,8 +19,11 @@ async function loginrequest(e){
         } 
       }
       catch(err){
-        if(err.response.status==401){
+        if(err.response.status==400){
           form.innerHTML += `<div style="color:red;">User not authorized</div>`;
+        }
+        else if(err.response.status==404){
+          form.innerHTML += `<div style="color:red;">User not found</div>`;
         }
         else{
           form.innerHTML += `<div style="color:red;">User not Found</div>`;
