@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="form">
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      <input type="hidden" id="id" name="id" >
+      <div class="btn-container">
+        <input type="submit" id="login" value="Login">
+      </div>
+      <div style="margin-bottom: 1rem; margin-top: 1rem;">
+        <a href="http://127.0.0.1:5501/views/signup.html">New User? Click Here.</a>
+    </div>
+    </form>
+  </div>
+  <script src="loginscipt.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+</body>
+</html>

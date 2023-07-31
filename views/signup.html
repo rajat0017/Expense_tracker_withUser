@@ -9,25 +9,25 @@
 <body>
   <div class="container">
     <h2>SignUp</h2>
-    <form >
+    <form id="form">
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required>
 
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required>
 
-      <label for="number">Number</label>
-      <input type="tel" id="number" name="number" required>
-
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required>
-
+      <input type="hidden" id="id" name="id" >
       <div class="btn-container">
         <input type="submit" id="signup" value="Sign Up">
-        <input type="button" value="Existing User ? Login">
+        <div style="margin-bottom: 1rem;">
+          <a href="http://127.0.0.1:5501/views/login.html">Existing User? Click Here.</a>
+      </div>
       </div>
     </form>
   </div>
   <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
 </body>
 </html>
