@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"],
+        input[type="text"]
+        {
+            width: 94.5%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        #expenseList {
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .totalexpense {
+            text-align: right;
+        }
+        @media (max-width: 600px) {
+            body {
+                font-size: 16px;
+            }
+
+            form {
+                max-width: 100%;
+            }
+
+            input[type="number"],
+            input[type="text"],
+            select {
+                width: 100%;
+            }
+        }
+
+        /* Additional styles for the delete button */
+        .expense-item {
+            position: relative;
+        }
+
+        .delete-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            padding: 5px 10px;
+            background-color: white;
+            color: #000000;
+            border: 1px solid rgb(207, 55, 55);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn:hover{
+            background-color: rgb(255, 0, 0);
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Expense Tracker</h1>
+    <form>
+        <label for="expense">Money Spent:</label>
+        <input type="text" id="expense" name="expense" required><br>
+
+        <label for="cat">Expense Category:</label>
+        <select id="catagory" name="category" required>
+            <option value="none">Select an Option</option>
+            <option value="Food">Food</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Rent">Rent</option>
+            <option value="Medical">Medical</option>
+        </select><br>
+
+        <label for="description">Expense Description:</label>
+        <input type="text" id="description" name="description" required><br>
+        <input type="hidden" id="id" name="id" >
+        <input type="submit" id="submit" value="Add Expense">
+        <h2>Expenses:</h2>
+        <div id="expenseList"></div>
+
+        <div class="totalexpense" id="totalexpense" style="margin-top: 1rem;">Total Expense: Rs.0.00</div>
+    </form>
+    <script src="expense.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+</body>
+
+</html>

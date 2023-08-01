@@ -2,6 +2,8 @@ const path = require('path');
 
 const userdetails = require('../models/user');
 
+const expenseDetails = require('../models/expense')
+
 const bcrypt = require('bcrypt');
 
 function validstring(string) {
@@ -55,4 +57,35 @@ exports.login = async (req, res, next) => {
     catch (err) {
         console.log(err);
     }
+}
+
+exports.addExpense = async (req, res, next)=>{
+    const {expense, catagory,description,totalexpense} = req.body;
+    try {
+      await expenseDetails.create({expense,catagory,description,totalexpense});
+    }
+    catch (err) {
+console.log(err);
+    }
+}
+
+exports.getExpenses = async (req, res, next) => {
+    try {
+        const Users = await expenseDetails.findAll();
+
+        res.status(200).json({ allUsers: Users });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err })
+    }
+}
+
+exports.deleteExpense = async (req, res, next)=> {
+    const id = req.params.id;
+   try{
+          await expenseDetails.destroy({where:{id:id}})
+   }
+   catch(err){
+     console.log(err);
+   }
 }
