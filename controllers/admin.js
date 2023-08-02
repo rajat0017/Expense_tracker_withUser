@@ -6,6 +6,8 @@ const expenseDetails = require('../models/expense')
 
 const bcrypt = require('bcrypt');
 
+const jwt = require('jsonwebtoken');
+
 function validstring(string) {
     if (string == undefined || string.length === 0) {
         return true;
@@ -33,6 +35,10 @@ exports.adduser = async (req, res, next) => {
     }
 }
 
+function generateToken(id) {
+    return jwt.sign({userId:id},'serdtfgyhujmk,lnuh85962fcds94545456dcuhcdyucdgcf5wf656f56f')
+}
+
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await userdetails.findAll({ where: { email: email } });
@@ -43,10 +49,10 @@ exports.login = async (req, res, next) => {
                     res.status(500).json({ success: false, message: 'something went wrong' })
                 }
                 if (result == true) {
-                    res.status(200).json({ success: true, meessage: 'user logged in' })
+                    res.status(200).json({ success: true, message: 'user logged in', token:generateToken(user[0].id) })
                 }
                 else {
-                    return res.status(400).json({ success: false, meessage: 'Password is Incorrect' })
+                     res.status(400).json({ success: false, message: 'Password is Incorrect' })
                 }
             })
         }
@@ -71,7 +77,7 @@ console.log(err);
 
 exports.getExpenses = async (req, res, next) => {
     try {
-        const Users = await expenseDetails.findAll();
+        const Users = await req.user.getExpenses({where:{userId:req.user.id}});
 
         res.status(200).json({ allUsers: Users });
     } catch (err) {

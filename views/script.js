@@ -18,7 +18,8 @@ async function postuser(e) {
             password: password.value
         }
         await axios.post("http://localhost:3000/user", obj);
-        window.location.href = 'http://127.0.0.1:5501/views/login.html';
+        alert('User Created Succesfully')
+        window.location.href = './login.html';
     }
     catch (err) {
         if(err.response.status==409){

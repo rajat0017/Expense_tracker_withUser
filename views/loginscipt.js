@@ -15,7 +15,9 @@ async function loginrequest(e){
         }
         const response = await axios.post("http://localhost:3000/login",obj);
         if(response.status==200){
-          alert('Logged in Succesfully');
+          alert(response.data.message);
+          localStorage.setItem('token', response.data.token);
+          window.location.href = './expense.html';
         } 
       }
       catch(err){

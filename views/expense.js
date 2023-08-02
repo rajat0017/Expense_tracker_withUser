@@ -5,7 +5,8 @@ btn.addEventListener('click', addexpense);
 let totalexpense = 0;
 
 window.addEventListener('DOMContentLoaded', () => {
-  axios.get("http://localhost:3000/getExpense")
+  const token = localStorage.getItem('token');
+  axios.get("http://localhost:3000/getExpense", {headers : {"Authorization":token}})
     .then((response) => {
       response.data.allUsers.forEach((ele) => {
         showonscreen(ele);

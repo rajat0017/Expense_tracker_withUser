@@ -6,13 +6,15 @@ const router = express.Router();
 
 const controller = require('../controllers/admin');
 
+const userauthentication = require('../middlewares/auth')
+
 router.post('/user', controller.adduser);
 
 router.post('/login', controller.login);
 
-router.post('/addexpense', controller.addExpense);
+router.post('/addexpense',controller.addExpense);
 
-router.get('/getExpense', controller.getExpenses)
+router.get('/getExpense', userauthentication.auth , controller.getExpenses)
 
 router.delete('/deleteExpense/:id', controller.deleteExpense);
 

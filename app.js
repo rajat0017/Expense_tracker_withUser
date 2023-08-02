@@ -19,6 +19,12 @@ const adminroutes = require('./routes/admin')
 
 app.use(adminroutes);
 
+const Expense = require('./models/expense');
+const User = require('./models/user');
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
+
 sequelize
   .sync()
   .then(result => {
