@@ -2,13 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
- exports.auth = (req, res, next) => {
+ exports.authentication = (req, res, next) => {
 
     try{
           const token = req.header('Authorization');
-          console.log(token);
           const user = jwt.verify(token,'serdtfgyhujmk,lnuh85962fcds94545456dcuhcdyucdgcf5wf656f56f')
-          console.log(user.userId)
           User.findByPk(user.userId).then(user=> {
             req.user=user;
             next();

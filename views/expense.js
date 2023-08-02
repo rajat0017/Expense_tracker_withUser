@@ -2,8 +2,6 @@ const btn = document.getElementById('submit');
 
 btn.addEventListener('click', addexpense);
 
-let totalexpense = 0;
-
 window.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
   axios.get("http://localhost:3000/getExpense", {headers : {"Authorization":token}})
@@ -24,7 +22,6 @@ function addexpense(e) {
   const expense = parseFloat(document.getElementById('expense').value);
   const catagory = document.getElementById('catagory').value;
   const description = document.getElementById('description').value;
-  totalexpense += expense;
   if (expense === '' || catagory === '' || description === '') {
     return alert('enter all details')
   }
@@ -34,9 +31,9 @@ function addexpense(e) {
     expense: expense,
     catagory: catagory,
     description: description,
-    totalexpense: totalexpense
   }
-  axios.post("http://localhost:3000/addexpense", obj);
+  const token = localStorage.getItem('token');
+  axios.post("http://localhost:3000/addexpense", obj, {headers : {"Authorization":token}});
   showonscreen(obj)
 
 }
@@ -53,13 +50,12 @@ function showonscreen(e) {
   deletebtn.textContent = 'Delete';
   deletebtn.className = 'delete-btn';
   deletebtn.addEventListener('click', () => {
-    axios.delete(`http://localhost:3000/deleteExpense/${e.id}`);
+    const token = localStorage.getItem('token');
+    axios.delete(`http://localhost:3000/deleteExpense/${e.id}`,{headers : {"Authorization":token}});
     expenselist.removeChild(expenseItem);
 });
 
   expenseItem.appendChild(deletebtn);
 
-  const finalExpense = document.getElementById('totalexpense');
-  finalExpense.textContent = `Total Expense: Rs.${e.totalexpense}`;
 }
 

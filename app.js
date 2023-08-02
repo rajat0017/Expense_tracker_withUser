@@ -15,9 +15,13 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 const sequelize = require('./utils/database');
 
-const adminroutes = require('./routes/admin')
+const userRoutes = require('./routes/userRoute');
 
-app.use(adminroutes);
+app.use(userRoutes);
+
+const expenseRoute = require('./routes/expenseRoute');
+
+app.use(expenseRoute);
 
 const Expense = require('./models/expense');
 const User = require('./models/user');
