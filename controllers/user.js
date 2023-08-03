@@ -36,7 +36,7 @@ exports.adduser = async (req, res, next) => {
 }
 
 function generateToken(id) {
-    return jwt.sign({userId:id},'serdtfgyhujmk,lnuh85962fcds94545456dcuhcdyucdgcf5wf656f56f')
+    return jwt.sign({userId:id}, process.env.TOKEN_ID)
 }
 
 exports.login = async (req, res, next) => {

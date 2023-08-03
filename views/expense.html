@@ -31,8 +31,7 @@
         }
 
         input[type="number"],
-        input[type="text"]
-        {
+        input[type="text"] {
             width: 94.5%;
             padding: 10px;
             margin-bottom: 15px;
@@ -77,6 +76,7 @@
         .totalexpense {
             text-align: right;
         }
+
         @media (max-width: 600px) {
             body {
                 font-size: 16px;
@@ -93,7 +93,6 @@
             }
         }
 
-        /* Additional styles for the delete button */
         .expense-item {
             position: relative;
         }
@@ -109,9 +108,27 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .delete-btn:hover{
+
+        .delete-btn:hover {
             background-color: rgb(255, 0, 0);
             color: #ffffff;
+        }
+
+        .premium-btn {
+            font-size: larger;
+            position: absolute;
+            top: 3rem;
+            right: 10rem;
+            padding: 20px 40px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .premium-btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -133,8 +150,11 @@
 
         <label for="description">Expense Description:</label>
         <input type="text" id="description" name="description" required><br>
-        <input type="hidden" id="id" name="id" >
+        <input type="hidden" id="id" name="id">
         <input type="submit" id="submit" value="Add Expense">
+
+        <button class="premium-btn" id="rzp-button1">Buy Premium</button>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <h2>Expenses:</h2>
         <div id="expenseList"></div>
 
