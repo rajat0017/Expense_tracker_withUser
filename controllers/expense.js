@@ -15,8 +15,7 @@ console.log(err);
 exports.getExpenses = async (req, res, next) => {
     try {
         const Users = await req.user.getExpenses({where:{userId:req.user.id}});
-
-        res.status(200).json({ allUsers: Users });
+        res.status(200).json({ allExpense: Users });
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err })

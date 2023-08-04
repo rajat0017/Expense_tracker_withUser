@@ -16,16 +16,14 @@ app.use(bodyParser.urlencoded({extended:false}));
 const sequelize = require('./utils/database');
 
 const userRoutes = require('./routes/userRoute');
+const expenseRoute = require('./routes/expenseRoute');
+const purchaseRoute = require('./routes/purchase');
+const premiumFeatureRoute = require('./routes/premiumFeatures');
 
 app.use(userRoutes);
-
-const expenseRoute = require('./routes/expenseRoute');
-
 app.use(expenseRoute);
-
-const purchaseRoute = require('./routes/purchase');
-
 app.use(purchaseRoute);
+app.use(premiumFeatureRoute)
 
 const Expense = require('./models/expense');
 const User = require('./models/user');

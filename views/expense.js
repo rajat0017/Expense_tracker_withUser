@@ -1,14 +1,31 @@
 const btn = document.getElementById('submit');
 
+const form = document.getElementById('expenseForm');
+
 btn.addEventListener('click', addexpense);
+
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   const token = localStorage.getItem('token');
+  const decodedToken = parseJwt(token);
+  const premiumUser= decodedToken.ispremiumuser;
+  if(premiumUser==true){
+    premiumbtn();
+    showleaderboard();
+  }
   axios.get("http://localhost:3000/getExpense", {headers : {"Authorization":token}})
     .then((response) => {
-      response.data.allUsers.forEach((ele) => {
+      response.data.allExpense.forEach((ele) => {
         showonscreen(ele);
-        totalexpense = ele.totalexpense;
       })
     })
     .catch((err) => {
@@ -68,12 +85,15 @@ document.getElementById('rzp-button1').onclick= async function(e){
     "key" : response.data.key_id,
     "order_id" : response.data.order.id,
     "handler" : async function (response) {
-      await axios.post('http://localhost:3000/updatetransactionstatus', {
+      const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus', {
         order_id: options.order_id,
         payment_id: response.razorpay_payment_id,
       }, {headers :{"Authorization":token}})
       premiumbtn();
       alert('you are a premium User Now')
+      showleaderboard();
+      localStorage.setItem('token', res.data.token)
+
     }
   };
   const rzp1 = new Razorpay(options);
@@ -92,4 +112,22 @@ function premiumbtn(){
   updatebtn.style.backgroundColor='green';
   updatebtn.style.color='white';
   updatebtn.disabled = true;
+}
+
+function showleaderboard(){
+  const inputElement = document.createElement("input");
+  inputElement.type = "button";
+  inputElement.className='leaderboard';
+  inputElement.value = 'Show Leaderboard'
+  inputElement.onclick = async()=> {
+    const token= localStorage.getItem('token')
+    const userLeaderboardArray = await axios.get('http://localhost:3000/premium/showLeaderboard', {headers : {"Authorization":token}})
+    console.log(userLeaderboardArray.data)
+    var leaderboardElem = document.getElementById('leaderboard')
+    leaderboardElem.innerHTML+=`<h2>LeaderBoard</h2>`
+    userLeaderboardArray.data.forEach((userDetails)=> {
+      leaderboardElem.innerHTML+=`<li>Name : ${userDetails.name}, Total Expense : ${userDetails.total_Expense}</li>`
+    })
+  }
+   document.getElementById("message").appendChild(inputElement)
 }

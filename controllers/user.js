@@ -35,8 +35,8 @@ exports.adduser = async (req, res, next) => {
     }
 }
 
-function generateToken(id) {
-    return jwt.sign({userId:id}, process.env.TOKEN_ID)
+exports.generateToken = (id,name,ispremiumuser )=> {
+    return jwt.sign({userId:id, name:name, ispremiumuser}, process.env.TOKEN_ID)
 }
 
 exports.login = async (req, res, next) => {
@@ -49,7 +49,7 @@ exports.login = async (req, res, next) => {
                     res.status(500).json({ success: false, message: 'something went wrong' })
                 }
                 if (result == true) {
-                    res.status(200).json({ success: true, message: 'user logged in', token:generateToken(user[0].id) })
+                    res.status(200).json({ success: true, message: 'user logged in', token: exports.generateToken(user[0].id,user[0].name,user[0].ispremiumuser) })
                 }
                 else {
                      res.status(400).json({ success: false, message: 'Password is Incorrect' })
@@ -64,3 +64,5 @@ exports.login = async (req, res, next) => {
         console.log(err);
     }
 }
+
+// module.exports= generateToken;

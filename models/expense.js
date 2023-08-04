@@ -10,7 +10,7 @@ const expense = sequelize.define('expense',{
        primaryKey:true
     },
     expense:{
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull:false
     },
     catagory:{
@@ -21,10 +21,7 @@ const expense = sequelize.define('expense',{
        type : Sequelize.STRING,
        allowNull:false
     }
-    ,
-    totalexpense: {
-      type: Sequelize.INTEGER,
-    }
+   
 })
 
 module.exports = expense;

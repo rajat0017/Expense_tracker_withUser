@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.get('/purchase/premiummembership',authenticatemiddleware.authentication, purchaseController.purchasepremium);
 
-router.post('/updatetransactionstatus', authenticatemiddleware.authentication, purchaseController.updatetransactionstatus)
+router.post('/purchase/updatetransactionstatus', authenticatemiddleware.authentication, purchaseController.updatetransactionstatus)
 
 module.exports  =router;
