@@ -4,16 +4,22 @@ const expenseDetails = require('../models/expense')
 
 const User = require('../models/user');
 
+const sequelize = require('../utils/database');
+const expense = require('../models/expense');
+
 exports.addExpense = async (req, res, next)=>{
+    const t= await sequelize.transaction();
     const {expense, catagory,description} = req.body;
     const totalExpense = req.user.totalExpense+expense;
     console.log(totalExpense)
     try {
-      await req.user.createExpense({expense,catagory,description});
-      await User.update({totalExpense:totalExpense}, {where:{id: req.user.id}})
+      await req.user.createExpense({expense,catagory,description},{transaction:t});
+      await User.update({totalExpense:totalExpense}, {where:{id: req.user.id}, transaction:t})
+      await t.commit();
       res.status(200).json({expense:expense})
     }
     catch (err) {
+        await t.rollback();
 console.log(err);
     }
 }
@@ -31,7 +37,10 @@ exports.getExpenses = async (req, res, next) => {
 exports.deleteExpense = async (req, res, next)=> {
     const id = req.params.id;
    try{
-          await expenseDetails.destroy({where:{id:id,userId:req.user.id}})
+          const expenses = await expenseDetails.findOne({expense:expense}, {where: {id:id}});
+          const deleteExpense = req.user.totalExpense - expenses.expense
+          await expenseDetails.destroy({where:{id:id,userId:req.user.id}});
+          await User.update({totalExpense:deleteExpense}, {where: {id:req.user.id}})
    }
    catch(err){
      console.log(err);
