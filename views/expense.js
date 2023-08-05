@@ -126,7 +126,7 @@ function showleaderboard(){
     var leaderboardElem = document.getElementById('leaderboard')
     leaderboardElem.innerHTML+=`<h2>LeaderBoard</h2>`
     userLeaderboardArray.data.forEach((userDetails)=> {
-      leaderboardElem.innerHTML+=`<li>Name : ${userDetails.name}, Total Expense : ${userDetails.total_Expense}</li>`
+      leaderboardElem.innerHTML+=`<li>Name : ${userDetails.name}, Total Expense : ${userDetails.totalExpense}</li>`
     })
   }
    document.getElementById("message").appendChild(inputElement)

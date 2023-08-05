@@ -2,10 +2,16 @@ const path = require('path');
 
 const expenseDetails = require('../models/expense')
 
+const User = require('../models/user');
+
 exports.addExpense = async (req, res, next)=>{
     const {expense, catagory,description} = req.body;
+    const totalExpense = req.user.totalExpense+expense;
+    console.log(totalExpense)
     try {
       await req.user.createExpense({expense,catagory,description});
+      await User.update({totalExpense:totalExpense}, {where:{id: req.user.id}})
+      res.status(200).json({expense:expense})
     }
     catch (err) {
 console.log(err);

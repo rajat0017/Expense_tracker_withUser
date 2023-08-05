@@ -64,5 +64,3 @@ exports.login = async (req, res, next) => {
         console.log(err);
     }
 }
-
-// module.exports= generateToken;
