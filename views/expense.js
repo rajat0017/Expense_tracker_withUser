@@ -131,3 +131,27 @@ function showleaderboard(){
   }
    document.getElementById("message").appendChild(inputElement)
 }
+
+function download(){
+  const token = localStorage.getItem('token');
+  axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+  .then((response) => {
+      if(response.status === 201){
+
+          var a = document.createElement("a");
+          a.href = response.data.fileUrl;
+          a.download = 'myexpense.csv';
+          a.click();
+      } else {
+          throw new Error(response.data.message)
+      }
+
+  })
+  .catch((err) => {
+      showError(err)
+  });
+}
+
+function showError(err){
+  document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
+}
