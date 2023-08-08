@@ -30,12 +30,16 @@ app.use(forgotPassRoute);
 const Expense = require('./models/expense');
 const User = require('./models/user');
 const Order = require('./models/orders');
+const forgotPass= require('./models/forgotPassword');
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(forgotPass);
+forgotPass.belongsTo(User);
 
 sequelize
   .sync()
