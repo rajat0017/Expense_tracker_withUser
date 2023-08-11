@@ -10,10 +10,10 @@
     <h1>Expense Tracker</h1>
     <form id="expenseForm">
         <label for="expense">Money Spent:</label>
-        <input type="text" id="expense" name="expense" required><br>
+        <input type="text" id="expense" name="expense" ><br>
 
         <label for="cat">Expense Category:</label>
-        <select id="catagory" name="category" required>
+        <select id="catagory" name="category" >
             <option value="none">Select an Option</option>
             <option value="Food">Food</option>
             <option value="Petrol">Petrol</option>
@@ -22,20 +22,21 @@
         </select><br>
 
         <label for="description">Expense Description:</label>
-        <input type="text" id="description" name="description" required><br>
+        <input type="text" id="description" name="description" ><br>
         <input type="hidden" id="id" name="id">
         <input type="submit" id="submit" value="Add Expense">
 
         <button class="premium-btn" id="rzp-button1">Buy Premium</button>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
         <h2>Expenses:</h2>
         <div id="expenseList"></div>
-        <button onclick="download()" id="downloadexpense">Download File</button>
+        <div id="downloadexpense"></div>
+        
         <div id="message"></div>
         <ul id="leaderboard"></ul>
     </form>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="expense.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" ></script>
 </body>
-
+<!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
 </html>

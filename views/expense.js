@@ -3,6 +3,7 @@ const btn = document.getElementById('submit');
 const form = document.getElementById('expenseForm');
 
 btn.addEventListener('click', addexpense);
+const token = localStorage.getItem('token');
 
 function parseJwt (token) {
   var base64Url = token.split('.')[1];
@@ -21,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if(premiumUser==true){
     premiumbtn();
     showleaderboard();
+    download();
   }
   axios.get("http://localhost:3000/getExpense", {headers : {"Authorization":token}})
     .then((response) => {
@@ -77,9 +79,10 @@ function showonscreen(e) {
 }
 
 document.getElementById('rzp-button1').onclick= async function(e){
-  const token = localStorage.getItem('token');
+e.preventDefault();
+const token = localStorage.getItem('token');
+try{
   const response = await axios.get('http://localhost:3000/purchase/premiummembership', {headers : {"Authorization":token}})
-  console.log(response);
   var options = 
   {
     "key" : response.data.key_id,
@@ -92,8 +95,8 @@ document.getElementById('rzp-button1').onclick= async function(e){
       premiumbtn();
       alert('you are a premium User Now')
       showleaderboard();
+      download();
       localStorage.setItem('token', res.data.token)
-
     }
   };
   const rzp1 = new Razorpay(options);
@@ -103,7 +106,10 @@ document.getElementById('rzp-button1').onclick= async function(e){
   rzp1.on('payment.failed', function(response){
     console.log(response)
     alert('something went wrong');
-  })
+  })}
+  catch(err){
+    console.log(err);
+  }
 }
 
 function premiumbtn(){
@@ -131,27 +137,26 @@ function showleaderboard(){
   }
    document.getElementById("message").appendChild(inputElement)
 }
-
-function download(){
+ 
+ function download(){
+  const inputEle = document.createElement("input");
+  inputEle.type = "button";
+  inputEle.className='download';
+  inputEle.value = 'Download File'
+  inputEle.onclick = async()=> {
   const token = localStorage.getItem('token');
-  axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
-  .then((response) => {
-      if(response.status === 201){
-
-          var a = document.createElement("a");
-          a.href = response.data.fileUrl;
-          a.download = 'myexpense.csv';
-          a.click();
-      } else {
-          throw new Error(response.data.message)
-      }
-
-  })
-  .catch((err) => {
-      showError(err)
-  });
+  try{
+    const response = await axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    if(response.status === 200){
+      var a = document.createElement("a");
+      a.href = response.data.fileURL;
+      a.download = 'myexpense.csv';
+      a.click();
+  }
 }
-
-function showError(err){
-  document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
+  catch(err){
+    console.log(err);
+  }
+  }
+document.getElementById("downloadexpense").appendChild(inputEle)
 }
