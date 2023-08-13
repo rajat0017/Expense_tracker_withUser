@@ -8,6 +8,7 @@ const sequelize = require('../utils/database');
 const expense = require('../models/expense');
 const UserServices = require('../services/userservices');
 const S3Services = require('../services/S3services');
+const Download = require('../models/download');
 
 exports.addExpense = async (req, res, next)=>{
     const t= await sequelize.transaction();
@@ -27,14 +28,26 @@ console.log(err);
 }
 
 exports.getExpenses = async (req, res, next) => {
+    const page = req.query.page || 1;
+    const itemsPerPage = 10;
+    const offset = (page - 1) * itemsPerPage;
+
     try {
-        const Users = await req.user.getExpenses({where:{userId:req.user.id}});
-        res.status(200).json({ allExpense: Users });
+        const expenses = await req.user.getExpenses({
+            where: { userId: req.user.id },
+            limit: itemsPerPage,
+            offset: offset,
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.status(200).json({ expenses: expenses, currentPage: page });
     } catch (err) {
         console.log(err);
-        res.status(500).json({ error: err })
+        res.status(500).json({ error: err });
     }
 }
+
+
 
 exports.deleteExpense = async (req, res, next)=> {
     const id = req.params.id;
@@ -58,13 +71,26 @@ exports.downloadExpense= async(req,res)=> {
     
         const filename = `Expenses${userId}/${new Date()}.txt`;
         const fileURL=  await S3Services.uploadToS3(stringifiedExpense,filename);
-    
+        await req.user.createDownload({fileUrl: fileURL, date: new Date()});
         res.status(200).json({fileURL ,success:true});
     }
     catch(err){
         console.log(err);
         res.status(500).json({fileURL:'',success:false,err:err})
     }
-    
+
 }
 
+exports.getDownloads = async (req, res) => {
+    if(req.user.ispremiumuser) {
+        try {
+            const downloads = await req.user.getDownloads();
+
+            res.status(200).json({downloads: downloads, success: true});
+        } catch (error) {
+            res.status(500).json({error: error, success: false});
+        }
+    } else {
+        res.status(400).json({message: 'user does not have Premium Membership'});
+    }
+}
