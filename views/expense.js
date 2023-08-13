@@ -5,7 +5,7 @@ const form = document.getElementById('expenseForm');
 btn.addEventListener('click', addexpense);
 const token = localStorage.getItem('token');
 
-const expensesPerPage = 10;
+let expensesPerPage ;
 let currentPage = 1;
 let totalExpenses = 0;
 
@@ -30,9 +30,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     download();
     getDownloads();
   }
+  let savedExpensesPerPage = localStorage.getItem('expensesPerPage');
+  if(!savedExpensesPerPage) {
+    savedExpensesPerPage = 5;
+}
+  // if (savedExpensesPerPage) {
+  //   expensesPerPage = parseInt(savedExpensesPerPage);
+
+  // }
   try {
     const response = await axios.get("http://localhost:3000/getExpenses?page=1", {
-      headers: { "Authorization": token }
+      headers: {
+        "Authorization": token,
+        "rows": savedExpensesPerPage
+      }
     });
 
     expensesData = response.data.expenses;
@@ -199,29 +210,37 @@ async function getDownloads(){
 }
 
 async function showExpensesForPage(page) {
-  const token = localStorage.getItem('token');
 
+  const token = localStorage.getItem('token');
+  let savedExpensesPerPage = localStorage.getItem('expensesPerPage');
+  if(!savedExpensesPerPage) {
+    savedExpensesPerPage = 5;
+} 
   try {
     const response = await axios.get(`http://localhost:3000/getExpenses?page=${page}`, {
-      headers: { Authorization: token }
+      headers: { Authorization: token ,
+        "rows": savedExpensesPerPage}
     });
+    const expenseList = document.getElementById('expenseList');
 
+    expenseList.innerHTML = '';
+    
     const expensesToShow = response.data.expenses;
-
+    
     expensesToShow.forEach((ele) => {
       showonscreen(ele);
     });
-
+    if(expensesToShow.length<10){
+      const nextPageBtn = document.getElementById('nextPageBtn');
+      nextPageBtn.disabled = true;
+    }
+    
     currentPage = page; 
     updatePagination();
   } catch (err) {
     console.log(err);
   }
 }
-
-
-
-
 
 
 function updatePagination() {
@@ -231,21 +250,38 @@ function updatePagination() {
 
   currentPageSpan.textContent = `Page ${currentPage}`;
   prevPageBtn.disabled = currentPage === 1;
-  nextPageBtn.disabled = expensesPerPage > totalExpenses;
+  nextPageBtn.disabled = expensesPerPage < totalExpenses;
+  
+  
 }
 
-document.getElementById('prevPageBtn').addEventListener('click', () => {
+document.getElementById('prevPageBtn').addEventListener('click', (e) => {
   if (currentPage > 1) {
     currentPage--;
     showExpensesForPage(currentPage);
     updatePagination();
   }
+  e.preventDefault()
 });
 
-document.getElementById('nextPageBtn').addEventListener('click', () => {
-  if (currentPage * expensesPerPage < totalExpenses) {
-    currentPage++;
-    showExpensesForPage(currentPage);
-    updatePagination();
-  }
+document.getElementById('nextPageBtn').addEventListener('click', (event) => {
+
+  currentPage = currentPage + 1;
+  showExpensesForPage(currentPage);
+  updatePagination();
+  event.preventDefault();
 });
+
+function updateExpensesPerPage(newExpensesPerPage) {
+  expensesPerPage = newExpensesPerPage;
+  localStorage.setItem('expensesPerPage', expensesPerPage);
+  // window.location.reload();
+}
+
+
+document.getElementById('expensesPerPageDropdown').addEventListener('change', (e) => {
+  e.preventDefault()
+  const newExpensesPerPage = parseInt(e.target.value);
+  updateExpensesPerPage(newExpensesPerPage);
+  showExpensesForPage(currentPage);
+});.0
