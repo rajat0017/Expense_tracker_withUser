@@ -31,7 +31,6 @@ exports.getExpenses = async (req, res, next) => {
     const page = req.query.page || 1;
     const itemsPerPage = +req.header('rows');
     const offset = (page - 1) * itemsPerPage;
-    console.log(+req.header('rows'))
 
     try {
         const expenses = await req.user.getExpenses({
