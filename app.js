@@ -43,6 +43,11 @@ app.use(expenseRoute);
 app.use(purchaseRoute);
 app.use(premiumFeatureRoute);
 app.use(forgotPassRoute);
+
+app.use((req, res)=> {
+  res.sendFile(path.join(__dirname,`views/${req.url}`))
+})
+
 app.use(helmet());
 app.use(compression());
 

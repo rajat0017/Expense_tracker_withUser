@@ -13,7 +13,7 @@ async function loginrequest(e){
            email:email.value,
            password:password.value
         }
-        const response = await axios.post("http://localhost:3000/login",obj);
+        const response = await axios.post("http://13.49.64.209:3000/login",obj);
         if(response.status==200){
           alert(response.data.message);
           localStorage.setItem('token', response.data.token);
