@@ -8,6 +8,6 @@ async function forgotPassword(e) {
     let obj = {
         email: email
     }
-    const response = await axios.post("http://13.49.64.209:3000/password/forgotpassword", obj);
+    const response = await axios.post("http://http://16.16.185.160/password/forgotpassword", obj);
     alert(response.data.message);
 }
