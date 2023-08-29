@@ -28,7 +28,7 @@ async function loginrequest(e){
           form.innerHTML += `<div style="color:red;">User not found</div>`;
         }
         else{
-          form.innerHTML += `<div style="color:red;">User not Found</div>`;
+          form.innerHTML += `<div style="color:red;">User not Found !</div>`;
         }
       }
 }
