@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // }
   try {
-    const response = await axios.get("http://http://16.16.185.160/getExpenses?page=1", {
+    const response = await axios.get("http://16.16.185.160:3000/getExpenses?page=1", {
       headers: {
         "Authorization": token,
         "rows": savedExpensesPerPage
@@ -73,7 +73,7 @@ function addexpense(e) {
     description: description,
   }
   const token = localStorage.getItem('token');
-  axios.post("http://http://16.16.185.160/addexpense", obj, {headers : {"Authorization":token}});
+  axios.post("http://16.16.185.160:3000/addexpense", obj, {headers : {"Authorization":token}});
   showonscreen(obj)
 
 }
@@ -92,7 +92,7 @@ function showonscreen(e) {
     deletebtn.className = 'delete-btn';
     deletebtn.addEventListener('click', () => {
       const token = localStorage.getItem('token');
-      axios.delete(`http://http://16.16.185.160/deleteExpense/${e.id}`, { headers: { "Authorization": token } });
+      axios.delete(`http://16.16.185.160:3000/deleteExpense/${e.id}`, { headers: { "Authorization": token } });
       expenselist.removeChild(expenseItem);
     });
 
@@ -108,13 +108,13 @@ document.getElementById('rzp-button1').onclick= async function(e){
 e.preventDefault();
 const token = localStorage.getItem('token');
 try{
-  const response = await axios.get('http://http://16.16.185.160/purchase/premiummembership', {headers : {"Authorization":token}})
+  const response = await axios.get('http://16.16.185.160:3000/purchase/premiummembership', {headers : {"Authorization":token}})
   var options = 
   {
     "key" : response.data.key_id,
     "order_id" : response.data.order.id,
     "handler" : async function (response) {
-      const res = await axios.post('http://http://16.16.185.160/purchase/updatetransactionstatus', {
+      const res = await axios.post('http://16.16.185.160:3000/purchase/updatetransactionstatus', {
         order_id: options.order_id,
         payment_id: response.razorpay_payment_id,
       }, {headers :{"Authorization":token}})
@@ -153,7 +153,7 @@ function showleaderboard(){
   inputElement.value = 'Show Leaderboard'
   inputElement.onclick = async()=> {
     const token= localStorage.getItem('token')
-    const userLeaderboardArray = await axios.get('http://http://16.16.185.160/premium/showLeaderboard', {headers : {"Authorization":token}})
+    const userLeaderboardArray = await axios.get('http://16.16.185.160:3000/premium/showLeaderboard', {headers : {"Authorization":token}})
     console.log(userLeaderboardArray.data)
     var leaderboardElem = document.getElementById('leaderboard')
     leaderboardElem.innerHTML+=`<h2>LeaderBoard</h2>`
@@ -172,7 +172,7 @@ function showleaderboard(){
   inputEle.onclick = async()=> {
   const token = localStorage.getItem('token');
   try{
-    const response = await axios.get('http://http://16.16.185.160/user/download', { headers: {"Authorization" : token} })
+    const response = await axios.get('http://16.16.185.160:3000/user/download', { headers: {"Authorization" : token} })
     if(response.status === 200){
       var a = document.createElement("a");
       a.href = response.data.fileURL;
@@ -190,7 +190,7 @@ document.getElementById("downloadexpense").appendChild(inputEle)
 async function getDownloads(){
     try {
         const downloads = document.getElementById('previousDownload');
-        const response = await axios.get('http://http://16.16.185.160/user/get-downloads', {
+        const response = await axios.get('http://16.16.185.160:3000/user/get-downloads', {
             headers: {
                 'Authorization': localStorage.getItem('token')
             }
@@ -217,7 +217,7 @@ async function showExpensesForPage(page) {
     savedExpensesPerPage = 5;
 } 
   try {
-    const response = await axios.get(`http://http://16.16.185.160/getExpenses?page=${page}`, {
+    const response = await axios.get(`http://16.16.185.160:3000/getExpenses?page=${page}`, {
       headers: { Authorization: token ,
         "rows": savedExpensesPerPage}
     });

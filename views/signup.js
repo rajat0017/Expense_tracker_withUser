@@ -17,7 +17,7 @@ async function postuser(e) {
             email: email.value,
             password: password.value
         }
-        await axios.post("http://http://16.16.185.160/user", obj);
+        await axios.post("http://16.16.185.160:3000/user", obj);
         alert('User Created Succesfully')
         window.location.href = './login.html';
     }
